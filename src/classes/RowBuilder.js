@@ -10,20 +10,22 @@ export default class RowBuilder extends React.Component{
         };
     }
 
-    componentWillReceiveProps(nextProps) {//https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
+    componentWillReceiveProps = (nextProps) => {//https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
         this.setState ( {
             cells :  this.props.cells
         });
-    }
+    };
 
     render() {
         //console.log("RowBuilder.render");
         var Cells = this.state.cells.map((cell, index) => {
             return(
-                <Cell cell={cell}
-                      onCellOpend={this.props.onCellOpend}
-                      onCellFlagChange={this.props.onCellFlagChange}
-                      onCellExplode={this.props.onCellExplode}
+                <Cell
+                    key={index}
+                    cell={cell}
+                    onCellOpend={this.props.onCellOpend}
+                    onCellFlagChange={this.props.onCellFlagChange}
+                    onCellExplode={this.props.onCellExplode}
                 />
             );
         });

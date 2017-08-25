@@ -1,5 +1,4 @@
 {
-  "homepage": "https://maorhadad.github.io/",
   "name": "msw",
   "version": "0.1.0",
   "private": true,
@@ -17,5 +16,6 @@
   },
   "devDependencies": {
     "gh-pages": "^1.0.0"
-  }
+  },
+  "homepage": "https://maorhadad.github.io/MineSweeper"
 }

@@ -11,13 +11,12 @@ export default class Cell extends React.Component{
             id_x : props.cell.id_x,
             adjacent : props.cell.adjacent,
         };
-        this.handleClick = this.handleClick.bind(this);//binding context to handleClick so it can work with this.state ...
     }
 
     /*
     * Handling changes rendering from parent
     * */
-    componentWillReceiveProps(nextProps) {//https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
+    componentWillReceiveProps = (nextProps) => {//https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
         this.setState ( {
             hasMine: nextProps.cell.hasMine,
             isFlaged: nextProps.cell.isFlaged,
@@ -27,9 +26,9 @@ export default class Cell extends React.Component{
             id_x : nextProps.cell.id_x,
             adjacent : nextProps.cell.adjacent
         });
-    }
+    };
 
-    handleClick (event) {
+    handleClick = (event) => {
         console.log("handleClick");
 
         if(event.shiftKey && !this.state.isOpen){
@@ -48,9 +47,9 @@ export default class Cell extends React.Component{
             }
         }
 
-    }
+    };
 
-    renderSuperman(){
+    renderSuperman = () => {
         if(this.state.hasMine){
             return (
                 <button className="button" onClick= {this.handleClick}>
@@ -72,9 +71,9 @@ export default class Cell extends React.Component{
             );
         }
 
-    }
+    };
 
-    renderNormal(){
+    renderNormal = () => {
         //console.log("Cell.renderNormal");
         var isFlaged = this.state.isFlaged;
         var isOpen = this.state.isOpen;
@@ -109,14 +108,14 @@ export default class Cell extends React.Component{
             );
         }
 
-    }
+    };
 
-    renderMineExplode(){
+    renderMineExplode = () => {
         console.log("Cell.renderMineExplode");
         return (
             <button className="button" >*</button>
         );
-    }
+    };
 
     render() {
         //console.log("Cell.render");
