@@ -5,31 +5,31 @@ export default class FormGridConfigs extends React.Component {
     constructor(props) {
         super(props);
         console.log("NameForm constructor");
-        this.state = {
-            width: 10,
-            height: 9,
+        this.state =  {
+            height: 10,
+            width: 9,
             mines: 8,
         };
     }
 
 
     componentWillUpdate(){
-        console.log("FormGridConfigs componentWillUpdate");
+        //console.log("FormGridConfigs componentWillUpdate");
     }
 
     componentDidUpdate (){
-        console.log("FormGridConfigs componentDidUpdate ");
+        //console.log("FormGridConfigs componentDidUpdate ");
     }
 
 
     componentDidMount(){
-        console.log("FormGridConfigs componentDidMount");
+        //console.log("FormGridConfigs componentDidMount");
     }
 
     handleWidth = (event) => {
         let _width = event.target.value;
         this.setState({
-            height: parseInt(_width, 10)
+            width: parseInt(_width, 10)
         });
     };
 
@@ -49,21 +49,22 @@ export default class FormGridConfigs extends React.Component {
     };
 
     handleSubmit = () => {
-        this.props.initGame();
+        this.props.initGame(this.state.height, this.state.width , this.state.mines);
     };
 
     getFormInputs = () =>{
-        console.log("NameForm getFormInputs");
+        //console.log("NameForm getFormInputs");
         return {
-            width : this.state.width,
             height : this.state.height,
+            width : this.state.width,
             mines : this.state.mines,
         };
     };
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <div>
+            <form>
                 <label>
                     Width:
                     <input type="number" value={this.state.width} onChange={this.handleWidth} />
@@ -77,8 +78,10 @@ export default class FormGridConfigs extends React.Component {
                     <input type="number" value={this.state.mines} onChange={this.handleMines} />
                 </label>
                 <br/>
-                <input type="submit" value="NEW GAME" />
+
             </form>
+                <button onClick= {this.handleSubmit}> New game</button>
+            </div>
         );
     }
 }

@@ -1,30 +1,77 @@
 import React from 'react';
-import RowBuilder from './RowBuilder.js'
+import Cell from './Cell.js'
 
 export default class GridBuilder extends React.Component{
     constructor(props){
         console.log("GridBuilder");
         super(props);
-        this.resetGrid();
+        this.state = {
+            numOfRows: props.numOfRows,
+            numOfCells: props.numOfCells,
+            numOfMines : props.numOfMines,
+            flagsRemaining :  props.numOfMines,
+            remainingMinesToFlag :  props.numOfMines
+        };
+        this.initGrid(props.numOfRows, props.numOfCells, props.numOfMines);
     }
 
-    resetGrid = () =>{
+    generateGrid = (numOfRows, numOfCells, numOfMines) =>{
+        var grid = this.fillRows(numOfRows, numOfCells);
+        var mineList = this.deployMines(grid, numOfRows, numOfCells,numOfMines);
+        grid = this.fillAdjacentMines(grid,mineList, numOfRows, numOfCells);
+        return grid;
+    }
+
+    initGrid = (numOfRows, numOfCells, numOfMines) =>{
         console.log("GridBuilder.resetGrid");
-        var grid = this.fillRows();
-        var mineList = this.deployMines(grid);
-        grid = this.fillAdjacentMines(grid,mineList);
+        var grid = this.generateGrid(numOfRows, numOfCells, numOfMines);
         this.state = {
             grid :  grid,
-            gridMineList :  mineList,
-            flagsRemaining :  this.props.numOfMines,
+            //gridMineList :  mineList,
+
+            numOfRows: numOfRows,
+            numOfCells: numOfCells,
+            numOfMines : numOfMines,
+            flagsRemaining : numOfMines,
+            remainingMinesToFlag : numOfMines,
         };
     };
 
-    fillRows = () =>{
+    componentWillReceiveProps = (nextProps) => {
+        console.log("GridBuilder componentWillReceiveProps");
+        console.log("nextProps.numOfRows: " + nextProps.numOfRows);
+        var grid = this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
+        console.log(grid);
+        //var mineList = this.deployMines(grid, nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
+        //grid = this.fillAdjacentMines(grid,mineList, nextProps.numOfRows, nextProps.numOfCells);
+        this.setState({
+                grid :  grid,
+                numOfRows: nextProps.numOfRows,
+                numOfCells: nextProps.numOfCells,
+                numOfMines : nextProps.numOfMines,
+                flagsRemaining : nextProps.numOfMines,
+                remainingMinesToFlag : nextProps.remainingMinesToFlag,
+            }
+        );
+
+        // this.setState ({
+        //     grid :  this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines),
+        //     numOfRows: nextProps.numOfRows,
+        //     numOfCells: nextProps.numOfCells,
+        //     numOfMines : nextProps.numOfMines,
+        //     flagsRemaining : nextProps.numOfMines,
+        //     remainingMinesToFlag : nextProps.remainingMinesToFlag,
+        // });
+    };
+
+    resetGrid = () =>{
+        console.log("GridBuilder.resetGrid");
+
+    };
+
+    fillRows = (numOfRows, numOfCells) =>{
         // console.log("GridBuilder.fillRows");
         var _grid = [];
-        let numOfRows = this.props.numOfRows;
-        let numOfCells = this.props.numOfCells;
 
         for(let row = 0 ; row < numOfRows ; row++){
             _grid.push([]);
@@ -65,8 +112,8 @@ export default class GridBuilder extends React.Component{
             return;
         }
 
-        let numOfRows = this.props.numOfRows;
-        let numOfCells = this.props.numOfCells;
+        let numOfRows = this.state.numOfRows;
+        let numOfCells = this.state.numOfCells;
 
         grid[cell.id_x][cell.id_y].isOpen = true;
 
@@ -76,7 +123,10 @@ export default class GridBuilder extends React.Component{
         let id_y =  cell.id_y;
         if(id_x >= 0){
             var nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            console.log(id_x+"");
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid, nextCell);
+
         }
 
         //Go south
@@ -84,7 +134,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y;
         if(id_x < numOfRows){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go west
@@ -92,7 +143,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y - 1;
         if(id_y >= 0){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go east
@@ -100,7 +152,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y + 1;
         if(id_y < numOfCells){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go north west
@@ -108,7 +161,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y - 1;
         if(id_x >= 0 && id_y >= 0){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go south west
@@ -116,7 +170,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y - 1;
         if(id_x < numOfRows && id_y >= 0){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go north east
@@ -124,7 +179,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y + 1;
         if(id_x >= 0 && id_y < numOfCells){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
 
         //Go south east
@@ -132,7 +188,8 @@ export default class GridBuilder extends React.Component{
         id_y =  cell.id_y + 1;
         if(id_x < numOfRows && id_y < numOfCells){
             nextCell = grid[id_x][id_y];
-            this.floodFill(grid,nextCell);
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+                this.floodFill(grid,nextCell);
         }
     };
 
@@ -151,43 +208,47 @@ export default class GridBuilder extends React.Component{
     onCellFlagChange = (_cell) =>{
 
         var grid =  this.state.grid;
-        var mineList =  this.state.gridMineList;
+        //var mineList =  this.state.gridMineList;
+        var remainingMinesToFlag =  this.state.remainingMinesToFlag;
 
-        var emptyMineList =  [];
+        //var emptyMineList =  [];
         var flagsRemaining =  this.state.flagsRemaining;
 
         var isFlaged = _cell.isFlaged;
         var hasMine = _cell.hasMine;
 
-        console.log("mineList length: " + mineList.length);
+        console.log("remainingMinesToFlag length: " + remainingMinesToFlag);
         if(!isFlaged){
             console.log("flaged");
             flagsRemaining--;
             if(hasMine){
-                emptyMineList = mineList.filter( el=> {
-                    return el.id_x !== _cell.id_x && el.id_y !== _cell.id_y;
-                });
-                mineList = emptyMineList.slice();
+                remainingMinesToFlag--;
+                // emptyMineList = mineList.filter( el=> {
+                //     return el.id_x !== _cell.id_x && el.id_y !== _cell.id_y;
+                // });
+                // mineList = emptyMineList.slice();
             }
         }else{
             console.log("un flaged");
             flagsRemaining++;
             if(hasMine){
-                mineList.push(_cell);
+                remainingMinesToFlag++;
+               // mineList.push(_cell);
             }
         }
         grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
-        console.log("mineList length: " + mineList.length);
+        console.log("mineList length: " + remainingMinesToFlag);
         this.setState({
             grid:grid,
-            gridMineList:mineList,
+            remainingMinesToFlag:remainingMinesToFlag,
             flagsRemaining:flagsRemaining,
         });
     };
 
     componentDidUpdate(){
         console.log("GridBuilder.componentDidUpdate");
-        if(this.state.gridMineList.length === 0){
+        console.log("GridBuilder.componentDidUpdate");
+        if(this.state.remainingMinesToFlag === 0){
             this.props.onGameWin();
         }
     }
@@ -200,12 +261,10 @@ export default class GridBuilder extends React.Component{
         }
     };
 
-    deployMines = (_grid) =>{
+    deployMines = (_grid, numOfRows, numOfCells, numOfMines) =>{
        // console.log(_grid);
-        let numOfRows = this.props.numOfRows;
-        let numOfCells = this.props.numOfCells;
         let mineList = [];
-        let i = this.props.numOfMines;
+        let i = numOfMines;
         while(i){
             let randX = Math.floor(Math.random()*numOfRows);
             let RandY = Math.floor(Math.random()*numOfCells);
@@ -222,12 +281,12 @@ export default class GridBuilder extends React.Component{
         return mineList;
     };
 
-    fillAdjacentMines = (grid,mineList) =>{
+    fillAdjacentMines = (grid,mineList, numOfRows, numOfCells) =>{
         //console.log("GridBuilder.fillAdjacentMines");
         let length = mineList.length;
 
-        let gridNumOfRows = this.props.numOfRows;
-        let gridNumOfCells = this.props.numOfCells;
+        let gridNumOfRows = numOfRows;
+        let gridNumOfCells = numOfCells;
         for(let i = 0 ; i <  length ; i++){
             let cell = mineList[i];
             let x = cell.id_x;
@@ -263,23 +322,30 @@ export default class GridBuilder extends React.Component{
     };
 
     render(){
-        //console.log("GridBuilder.render");
+        console.log("GridBuilder.render");
         var gridUi = this.state.grid.map((row, index) => {
+            var v = row.map((cell, index) => {
+                return (
+
+                    <Cell
+                        key={index}
+                        cell={cell}
+                        onCellOpend={this.onCellOpend}
+                        onCellFlagChange={this.onCellFlagChange}
+                        onCellExplode={this.onCellExplode}
+                    />
+
+                );
+            });
             return(
-                <RowBuilder
-                    key={index}
-                    cells={row}
-                    onCellOpend={this.onCellOpend}
-                    onCellFlagChange={this.onCellFlagChange}
-                    onCellExplode ={this.onCellExplode}
-                />
+                <tr className="trc" key={index}>{v}</tr>
             );
         });
         return (
             <div>
                 <h10>Flags: {this.state.flagsRemaining}</h10>
                 <table className="Grid">
-                    <tbody>
+                    <tbody className="GridBody">
                         {gridUi}
                     </tbody>
                 </table>

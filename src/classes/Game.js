@@ -5,7 +5,7 @@ import FormGridConfigs from './FormGridConfigs.js'
 export default class Game extends React.Component{
     constructor(props){
         super(props);
-        console.log("Game constructor");
+        //console.log("Game constructor");
         this.state = {
             numOfRows: 10,
             numOfCells: 9,
@@ -14,21 +14,39 @@ export default class Game extends React.Component{
         };
     }
 
-    componentDidMount(){
-        console.log("Game componentDidMount");
-        this.resetGame();
+    componentDidUpdate(){
+        //console.log("Game componentDidUpdated");
+        //this.resetGame();
         // this.setState({
         //     numOfRows: bundle.height,
         //     numOfCells: bundle.width,
         //     numOfMines: bundle.mines,
         // });
-
     }
 
 
+    initGame = (_numOfRows, _numOfCells, _numOfMines) =>{
+        //console.log("initGame");
+        //console.log("_numOfRows: " + _numOfRows);
+        //console.log("_numOfCells: " + _numOfCells);
+        var a = _numOfRows;
+        var b = _numOfCells;
+        var c = _numOfMines;
+        this.setState ({
+            numOfRows: a,
+            numOfCells: b,
+            numOfMines: c,
+        });
+        //
+        // setTimeout( () => {
+        //     this.resetGame();//Letting set state to init params
+        // },2000);
+
+    };
+
     resetGame = () =>{
         console.log("resetGame");
-        this.refs.grid.resetGrid();
+        //this.refs.grid.resetGrid();
         let uniqueId = this.state.uniqueId;
         uniqueId === 0? uniqueId = 1 : uniqueId = 0;
         this.setState({
@@ -59,17 +77,20 @@ export default class Game extends React.Component{
 
     render(){
         return (
-            <div key={this.state.uniqueId}>
+            <div >
                 <FormGridConfigs
                     ref="inputs"
+                    initGame={this.initGame}
                    />
                <br />
-                <GridBuilder ref="grid"
-                             numOfRows = {this.state.numOfRows}
-                             numOfCells = {this.state.numOfCells}
-                             numOfMines= {this.state.numOfMines}
-                             onGameLose={this.onGameLose}
-                             onGameWin={this.onGameWin}
+                <GridBuilder
+                    key={this.state.uniqueId}
+                    ref="grid"
+                     numOfRows = {this.state.numOfRows}
+                     numOfCells = {this.state.numOfCells}
+                     numOfMines= {this.state.numOfMines}
+                     onGameLose={this.onGameLose}
+                     onGameWin={this.onGameWin}
                 />
             </div>
 

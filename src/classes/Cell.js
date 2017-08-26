@@ -4,6 +4,7 @@ export default class Cell extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            superman : true,
             hasMine: props.cell.hasMine,
             isFlaged: props.cell.isFlaged,
             isOpen : props.cell.isOpen,
@@ -17,6 +18,25 @@ export default class Cell extends React.Component{
     * Handling changes rendering from parent
     * */
     componentWillReceiveProps = (nextProps) => {//https://stackoverflow.com/questions/41233458/react-child-component-not-updating-after-parent-state-change
+       // console.log("componentWillReceiveProps");
+        var hasMine= nextProps.cell.hasMine;
+        var isFlaged= nextProps.cell.isFlaged;
+        var isOpen = nextProps.cell.isOpen;
+        var adjacent = nextProps.cell.adjacent;
+        var id_y = nextProps.cell.id_y;
+        var id_x = nextProps.cell.id_x;
+
+
+        if(hasMine === this.state.hasMine
+            && isFlaged === this.state.isFlaged
+            && isOpen === this.state.isOpen
+            && id_y === this.state.id_y
+            && id_x === this.state.id_x
+            && adjacent === this.state.adjacent
+            && isFlaged === this.state.isFlaged){
+            return;
+        }
+        console.log("componentWillReceiveProps true");
         this.setState ( {
             hasMine: nextProps.cell.hasMine,
             isFlaged: nextProps.cell.isFlaged,
@@ -29,7 +49,7 @@ export default class Cell extends React.Component{
     };
 
     handleClick = (event) => {
-        console.log("handleClick");
+        //console.log("handleClick");
 
         if(event.shiftKey && !this.state.isOpen){
 
@@ -42,7 +62,7 @@ export default class Cell extends React.Component{
 
             }else{
 
-                console.log("props.cell.onCellOpend;");
+                //console.log("props.cell.onCellOpend;");
                 this.props.onCellOpend(this.props.cell)
             }
         }
@@ -52,21 +72,19 @@ export default class Cell extends React.Component{
     renderSuperman = () => {
         if(this.state.hasMine){
             return (
-                <button className="button" onClick= {this.handleClick}>
+                <td className="button" onClick= {this.handleClick}>
                     <h10>*</h10>
                     <h10>{this.state.adjacent + ""}</h10><br/>
-                    <h10>y: {this.state.id_x + ""}</h10>
-                    <h10>x: {this.state.id_y + ""}</h10>
-                </button>
+
+
+                </td>
 
             );
         }else{
             return (
-                <button className="button" onClick= {this.handleClick}>
+                <td className="button" onClick= {this.handleClick}>
                     <h10>{this.state.adjacent + ""}</h10>
-                    <h10>y: {this.state.id_x + ""}</h10>
-                    <h10>x: {this.state.id_y + ""}</h10>
-                </button>
+                </td>
 
             );
         }
@@ -78,47 +96,52 @@ export default class Cell extends React.Component{
         var isFlaged = this.state.isFlaged;
         var isOpen = this.state.isOpen;
         var hasMine = this.state.hasMine;
+        var superman = this.state.superman;
         if(hasMine && isOpen){
             return (
-                <button
-
+                <td
                     className="button_open"
                     onClick= {this.handleClick}>
                     *
-                </button>
-
+                </td>
             );
         }
         else if(isOpen){
             return (
-                <button className="button_open" onClick= {this.handleClick}>
+                <td className="button_open" onClick= {this.handleClick}>
                     {this.state.adjacent + ""}
-                </button>
+                </td>
 
             );
         }else if(isFlaged){
             return (
-                <button className="button" onClick= {this.handleClick}>
+                <td className="button" onClick= {this.handleClick}>
                     Flag
-                </button>
+                </td>
             );
-        }else{
+        }else if(superman && hasMine) {
             return (
-                <button className="button" onClick= {this.handleClick}/>
+                <td className="button" onClick={this.handleClick}>
+                    *
+                </td>
             );
+        } else{
+            return (
+                <td className="button" onClick= {this.handleClick}/>
+            )
         }
 
     };
 
     renderMineExplode = () => {
-        console.log("Cell.renderMineExplode");
+      //  console.log("Cell.renderMineExplode");
         return (
-            <button className="button" >*</button>
+            <td className="button" >*</td>
         );
     };
 
     render() {
-        //console.log("Cell.render");
+        console.log("Cell.render");
         //console.log("gameOver: " + this.state.gameOver);
 
         if(this.state.gameOver){
@@ -127,14 +150,14 @@ export default class Cell extends React.Component{
 
         }
 
-        if(false){
-            // console.log("renderSuperman");
-            return this.renderSuperman();
-
-        }else{
+        // if(this.state.superman){
+        //     // console.log("renderSuperman");
+        //     return this.renderSuperman();
+        //
+        // }else{
             //  console.log("renderNormal");
             return this.renderNormal();
-        }
+       // }
 
     }
 }
