@@ -2,7 +2,7 @@ import React from 'react';
 import GridBuilder from './GridBuilder.js'
 import FormGridConfigs from './FormGridConfigs.js'
 
-export default class Game extends React.Component{
+export default class Game extends React.PureComponent{
     constructor(props){
         super(props);
         //console.log("Game constructor");

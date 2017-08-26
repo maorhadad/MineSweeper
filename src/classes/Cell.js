@@ -91,6 +91,15 @@ export default class Cell extends React.Component{
 
     };
 
+    setOpen = (_isOpen)=>{
+        if(_isOpen === this.state.isOpen){
+            return
+        }
+        this.setState({
+            isOpen:_isOpen
+        });
+    };
+
     renderNormal = () => {
         //console.log("Cell.renderNormal");
         var isFlaged = this.state.isFlaged;
