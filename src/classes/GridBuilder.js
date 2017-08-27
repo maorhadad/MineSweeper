@@ -15,15 +15,8 @@ export default class GridBuilder extends React.Component{
         this.initGrid(props.numOfRows, props.numOfCells, props.numOfMines);
     }
 
-    generateGrid = (numOfRows, numOfCells, numOfMines) =>{
-        var grid = this.fillRows(numOfRows, numOfCells);
-        var mineList = this.deployMines(grid, numOfRows, numOfCells,numOfMines);
-        grid = this.fillAdjacentMines(grid,mineList, numOfRows, numOfCells);
-        return grid;
-    }
-
     initGrid = (numOfRows, numOfCells, numOfMines) =>{
-        console.log("GridBuilder.resetGrid");
+        console.log("GridBuilder.initGrid");
         var grid = this.generateGrid(numOfRows, numOfCells, numOfMines);
         this.state = {
             grid :  grid,
@@ -37,27 +30,12 @@ export default class GridBuilder extends React.Component{
         };
     };
 
-    componentWillReceiveProps = (nextProps) => {
-        console.log("GridBuilder componentWillReceiveProps");
-        console.log("nextProps.numOfRows: " + nextProps.numOfRows);
-        var grid = this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
-        console.log(grid);
-        //var mineList = this.deployMines(grid, nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
-        //grid = this.fillAdjacentMines(grid,mineList, nextProps.numOfRows, nextProps.numOfCells);
-        this.setState({
-                grid :  grid,
-                numOfRows: nextProps.numOfRows,
-                numOfCells: nextProps.numOfCells,
-                numOfMines : nextProps.numOfMines,
-                flagsRemaining : nextProps.numOfMines,
-                remainingMinesToFlag : nextProps.remainingMinesToFlag,
-            }
-        );
-    };
-
-    resetGrid = () =>{
-        console.log("GridBuilder.resetGrid");
-
+    generateGrid = (numOfRows, numOfCells, numOfMines) =>{
+        var grid = this.fillRows(numOfRows, numOfCells);
+        var mineList = this.deployMines(grid, numOfRows, numOfCells,numOfMines);
+        grid = this.fillAdjacentMines(grid,mineList, numOfRows, numOfCells);
+        //this.printGrid(grid);
+        return grid;
     };
 
     fillRows = (numOfRows, numOfCells) =>{
@@ -84,242 +62,8 @@ export default class GridBuilder extends React.Component{
         return  _grid;
     };
 
-    onCellOpend = (_cell) =>{
-        let grid =  this.state.grid;
-        this.forestFire(grid, _cell);
-        // this.setState({
-        //     grid:grid,
-        // });
-    };
-
-
-    forestFire = (_grid, _cell) =>{
-        var cellsQ = [];
-        let numOfRows = this.state.numOfRows;
-        let numOfCells = this.state.numOfCells;
-        cellsQ.push(_cell);
-        console.log(cellsQ.length);
-        while (cellsQ.length){
-            if(cellsQ.length === numOfCells*numOfRows){
-                return;
-            }
-            console.log("length : " + cellsQ.length);
-            let currentCell = cellsQ[0];
-            cellsQ.splice(0,1);
-            console.log("length : " + cellsQ.length);
-            if(currentCell.adjacent > 0 ){
-                this.openCell(_grid,currentCell);
-                continue;
-            }
-
-            let minX = currentCell.id_x - 1; // top left
-            let minY = currentCell.id_y - 1;
-
-            let maxX = currentCell.id_x + 1; // bottom right
-            let maxY = currentCell.id_y + 1;
-
-            for(let i = minX ; i <= maxX ; i++){
-                console.log("i: " + i);
-                if( i < 0 || i >= numOfRows) {
-                    continue;
-                }
-                for(let j = minY ; j <= maxY ; j ++){
-                    console.log("j: " + j);
-                    if(i === currentCell.id_x && j === currentCell.id_y){
-                        continue
-                    }
-                    if( j < 0 || j >= numOfCells) {
-                        continue;
-                    }
-                    let tCell = _grid[i][j];
-                    if(tCell.isFlaged){
-                        continue;
-                    }
-                    if(!tCell.isOpen){
-                        this.openCell(_grid,tCell);
-                        cellsQ.push(tCell);
-                    }
-
-
-                }
-            }
-        }
-    };
-
-    openCell = (_grid, cell) =>{
-        _grid[cell.id_x][cell.id_y].isOpen = true;
-        let index_ref = "cell_"+ cell.id_x + cell.id_y;//getting reference to cell
-        let cellRef = this.refs[index_ref];
-        cellRef.setOpen(true);
-    };
-
-    floodFill = (grid, cell) =>{
-
-        if(cell.isOpen || cell.isFlaged){
-            return;
-        }
-        var index_ref = "cell_"+ cell.id_x + cell.id_y;
-
-        let cellRef = this.refs[index_ref];
-        if(cell.adjacent > 0 ){
-
-            grid[cell.id_x][cell.id_y].isOpen = true;
-            cellRef.setOpen(true);
-
-            return;
-        }
-
-        let numOfRows = this.state.numOfRows;
-        let numOfCells = this.state.numOfCells;
-
-        grid[cell.id_x][cell.id_y].isOpen = true;
-        cellRef.setOpen(true);
-
-        //Go north
-        let id_x =  cell.id_x - 1;
-        let id_y =  cell.id_y;
-        if(id_x >= 0){
-            var nextCell = grid[id_x][id_y];
-            console.log(id_x+"");
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid, nextCell);
-
-        }
-
-        //Go south
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y;
-        if(id_x < numOfRows){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go west
-        id_x =  cell.id_x;
-        id_y =  cell.id_y - 1;
-        if(id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go east
-        id_x =  cell.id_x;
-        id_y =  cell.id_y + 1;
-        if(id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go north west
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y - 1;
-        if(id_x >= 0 && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go south west
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y - 1;
-        if(id_x < numOfRows && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go north east
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y + 1;
-        if(id_x >= 0 && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-
-        //Go south east
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y + 1;
-        if(id_x < numOfRows && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-                this.floodFill(grid,nextCell);
-        }
-    };
-
-    onCellExplode = (_cell) =>{
-
-        var grid =  this.state.grid;
-        grid[_cell.id_x][_cell.id_y].isOpen = true;
-
-        //this.printGrid();
-        this.setState({
-            grid:grid,
-        });
-        this.props.onGameLose();
-    };
-
-    onCellFlagChange = (_cell) =>{
-
-        var grid =  this.state.grid;
-        //var mineList =  this.state.gridMineList;
-        var remainingMinesToFlag =  this.state.remainingMinesToFlag;
-
-        //var emptyMineList =  [];
-        var flagsRemaining =  this.state.flagsRemaining;
-
-        var isFlaged = _cell.isFlaged;
-        var hasMine = _cell.hasMine;
-
-        console.log("remainingMinesToFlag length: " + remainingMinesToFlag);
-        if(!isFlaged){
-            console.log("flaged");
-            flagsRemaining--;
-            if(hasMine){
-                remainingMinesToFlag--;
-                // emptyMineList = mineList.filter( el=> {
-                //     return el.id_x !== _cell.id_x && el.id_y !== _cell.id_y;
-                // });
-                // mineList = emptyMineList.slice();
-            }
-        }else{
-            console.log("un flaged");
-            flagsRemaining = flagsRemaining + 1;
-            if(hasMine){
-                remainingMinesToFlag = remainingMinesToFlag + 1;
-               // mineList.push(_cell);
-            }
-        }
-        grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
-        console.log("mineList length: " + remainingMinesToFlag);
-        this.setState({
-            grid:grid,
-            remainingMinesToFlag:remainingMinesToFlag,
-            flagsRemaining:flagsRemaining,
-        });
-    };
-
-    componentDidUpdate(){
-        console.log("GridBuilder.componentDidUpdate");
-        console.log("GridBuilder.componentDidUpdate");
-        if(this.state.remainingMinesToFlag === 0){
-            this.props.onGameWin();
-        }
-    }
-
-    printGrid = () => {
-        for(let i = 0 ; i < this.state.grid.length ; i++){
-            for (let j = 0 ; j < this.state.grid[i].length ; j++){
-                console.log( this.state.grid[i][j]);
-            }
-        }
-    };
-
     deployMines = (_grid, numOfRows, numOfCells, numOfMines) =>{
-       // console.log(_grid);
+        // console.log(_grid);
         let mineList = [];
         let i = numOfMines;
         while(i){
@@ -378,18 +122,281 @@ export default class GridBuilder extends React.Component{
         return grid;
     };
 
+    componentWillReceiveProps = (nextProps) => {
+        console.log("GridBuilder componentWillReceiveProps");
+        console.log("nextProps.numOfRows: " + nextProps.numOfRows);
+        var grid = this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
+        this.setState({
+                grid :  grid,
+                numOfRows: nextProps.numOfRows,
+                numOfCells: nextProps.numOfCells,
+                numOfMines : nextProps.numOfMines,
+                flagsRemaining : nextProps.numOfMines,
+                remainingMinesToFlag : nextProps.remainingMinesToFlag,
+            }
+        );
+    };
+
+    onCellOpen = (_cell) =>{
+        let grid =  this.state.grid;
+        this.forestFire(grid, _cell);
+    };
+
+    forestFire = (_grid, _cell) =>{
+
+        let cellsQ = [];
+        let numOfRows = this.state.numOfRows;
+        let numOfCells = this.state.numOfCells;
+        cellsQ.push(_cell);
+        console.log("cellsQ length: " + cellsQ.length);
+        while (cellsQ.length){
+            if(cellsQ.length === numOfCells*numOfRows){
+                return;
+            }
+            //console.log("length : " + cellsQ.length);
+            let currentCell = cellsQ[0];
+            cellsQ.splice(0,1);
+            if(currentCell.adjacent > 0 ){
+                this.openCell(_grid,currentCell);
+                continue;
+            }
+
+            let minX = currentCell.id_x - 1; // top left
+            let minY = currentCell.id_y - 1;
+
+            let maxX = currentCell.id_x + 1; // bottom right
+            let maxY = currentCell.id_y + 1;
+
+            for(let i = minX ; i <= maxX ; i++){
+                //console.log("X: " + i);
+                if( i < 0 || i >= numOfRows) {//Out of bounds
+                    continue;
+                }
+                for(let j = minY ; j <= maxY ; j ++){
+                    //console.log("X: " + i + " Y :" + j);
+
+                    if(i === currentCell.id_x && j === currentCell.id_y){//Same cell.We don't need to reenter it.(Infinity loop)
+                        continue
+                    }
+                    if( j < 0 || j >= numOfCells) {//Out of bounds
+                        continue;
+                    }
+                    let tCell = _grid[i][j];
+
+
+                    if(tCell.isFlaged || tCell.hasMine){
+                        continue;
+                    }
+
+                    if(1 === tCell.id_x && 28 === tCell.id_y){
+                        console.log("above !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
+                    }
+
+                    if(!tCell.isOpen){
+                        if(1 === tCell.id_x && 28 === tCell.id_y){
+                            console.log("in tcell !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
+                        }
+                        this.openCell(_grid,tCell);
+                        if(cellsQ.length < 100){
+                            cellsQ.push(tCell);
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    openCell = (_grid, cell) =>{
+
+        _grid[cell.id_x][cell.id_y].isOpen = true;
+        let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
+        let cellRef = this.refs[index_ref];
+        if(1 === cell.id_x && 28 === cell.id_y){
+            console.log("openCell middle: ");
+            console.log(cellRef);
+        }
+        if(0 === cell.id_x && 0 === cell.id_y){
+            console.log("openCell middle: ");
+            console.log(cellRef);
+        }
+        cellRef.setOpen(true);
+    };
+
+    onCellFlagChange = (_cell) =>{
+
+        let grid =  this.state.grid;
+        //var mineList =  this.state.gridMineList;
+        let remainingMinesToFlag =  this.state.remainingMinesToFlag;
+
+        //var emptyMineList =  [];
+        let flagsRemaining =  this.state.flagsRemaining;
+
+        let isFlaged = _cell.isFlaged;
+        let hasMine = _cell.hasMine;
+
+        console.log("remainingMinesToFlag length: " + remainingMinesToFlag);
+        if(!isFlaged){
+            console.log("flaged");
+            flagsRemaining--;
+            if(hasMine){
+                remainingMinesToFlag--;
+            }
+        }else{
+            console.log("un flaged");
+            flagsRemaining = flagsRemaining + 1;
+            if(hasMine){
+                remainingMinesToFlag = remainingMinesToFlag + 1;
+            }
+        }
+        grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
+
+        console.log("mineList length: " + remainingMinesToFlag);
+        this.changeCellFlagState(grid,_cell);
+        this.setState({
+            remainingMinesToFlag:remainingMinesToFlag,
+            flagsRemaining:flagsRemaining,
+        });
+        if(remainingMinesToFlag === 0){
+            this.props.onGameWin();
+        }
+    };
+
+    changeCellFlagState = (_grid, cell) =>{
+        _grid[cell.id_x][cell.id_y].isOpen = true;
+        let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
+        let cellRef = this.refs[index_ref];
+        cellRef.setFlaged(true);
+    };
+
+    onCellExplode = (_cell) =>{
+
+        var grid =  this.state.grid;
+        grid[_cell.id_x][_cell.id_y].isOpen = true;
+        this.openCell(grid,_cell);
+        this.props.onGameLose();
+    };
+
+    printGrid = (grid) => {
+        console.log( "printGrid: " + grid.length);
+        for(let i = 0 ; i < grid.length ; i++){
+            for (let j = 0 ; j < grid[i].length ; j++){
+                console.log( grid[i][j]);
+            }
+        }
+    };
+
+    /*
+       * It cause to RangeError: Maximum call stack size exceeded.
+       * Now it #ForestFire.
+       * */
+    floodFill = (grid, cell) =>{
+
+        if(cell.isOpen || cell.isFlaged){
+            return;
+        }
+        var index_ref = this.buildReferenceId(cell.id_x , cell.id_y);
+        let cellRef = this.refs[index_ref];
+        if(cell.adjacent > 0 ){
+
+            grid[cell.id_x][cell.id_y].isOpen = true;
+            cellRef.setOpen(true);
+
+            return;
+        }
+
+        let numOfRows = this.state.numOfRows;
+        let numOfCells = this.state.numOfCells;
+
+        grid[cell.id_x][cell.id_y].isOpen = true;
+        cellRef.setOpen(true);
+
+        //Go north
+        let id_x =  cell.id_x - 1;
+        let id_y =  cell.id_y;
+        if(id_x >= 0){
+            var nextCell = grid[id_x][id_y];
+            console.log(id_x+"");
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid, nextCell);
+
+        }
+
+        //Go south
+        id_x =  cell.id_x + 1;
+        id_y =  cell.id_y;
+        if(id_x < numOfRows){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go west
+        id_x =  cell.id_x;
+        id_y =  cell.id_y - 1;
+        if(id_y >= 0){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go east
+        id_x =  cell.id_x;
+        id_y =  cell.id_y + 1;
+        if(id_y < numOfCells){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go north west
+        id_x =  cell.id_x - 1;
+        id_y =  cell.id_y - 1;
+        if(id_x >= 0 && id_y >= 0){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go south west
+        id_x =  cell.id_x + 1;
+        id_y =  cell.id_y - 1;
+        if(id_x < numOfRows && id_y >= 0){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go north east
+        id_x =  cell.id_x - 1;
+        id_y =  cell.id_y + 1;
+        if(id_x >= 0 && id_y < numOfCells){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+
+        //Go south east
+        id_x =  cell.id_x + 1;
+        id_y =  cell.id_y + 1;
+        if(id_x < numOfRows && id_y < numOfCells){
+            nextCell = grid[id_x][id_y];
+            //if( !(nextCell.isOpen && nextCell.isFlaged))
+            this.floodFill(grid,nextCell);
+        }
+    };
+
     render(){
         console.log("GridBuilder.render");
         var gridUi = this.state.grid.map((row, index_x) => {
             var v = row.map((cell, index_y) => {
-                var index_ref = "cell_"+ index_x + index_y;
+                var index_ref = this.buildReferenceId(index_x , index_y);
                 return (
 
                     <Cell
                         ref={index_ref}
                         key={index_y}
                         cell={cell}
-                        onCellOpend={this.onCellOpend}
+                        onCellOpen={this.onCellOpen}
                         onCellFlagChange={this.onCellFlagChange}
                         onCellExplode={this.onCellExplode}
                     />
@@ -410,5 +417,9 @@ export default class GridBuilder extends React.Component{
             </div>
 
         );
+    }
+
+    buildReferenceId = (index_x , index_y) =>{
+        return "cell_"+ index_x+ "," + index_y;
     }
 }

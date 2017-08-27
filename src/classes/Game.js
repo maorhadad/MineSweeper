@@ -2,7 +2,7 @@ import React from 'react';
 import GridBuilder from './GridBuilder.js'
 import FormGridConfigs from './FormGridConfigs.js'
 
-export default class Game extends React.PureComponent{
+export default class Game extends React.Component{
     constructor(props){
         super(props);
         //console.log("Game constructor");
@@ -29,6 +29,7 @@ export default class Game extends React.PureComponent{
         //console.log("initGame");
         //console.log("_numOfRows: " + _numOfRows);
         //console.log("_numOfCells: " + _numOfCells);
+        console.log("initGame");
         var a = _numOfRows;
         var b = _numOfCells;
         var c = _numOfMines;
@@ -36,12 +37,8 @@ export default class Game extends React.PureComponent{
             numOfRows: a,
             numOfCells: b,
             numOfMines: c,
-        });
-        //
-        // setTimeout( () => {
-        //     this.resetGame();//Letting set state to init params
-        // },2000);
 
+        },this.resetGame());
     };
 
     resetGame = () =>{

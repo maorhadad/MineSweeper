@@ -52,8 +52,8 @@ ol, ul {
 }
 
 .button {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background-color: lightgray;
   border: solid;
   border-width: 0.5px;
@@ -67,8 +67,8 @@ ol, ul {
   cursor: pointer;
 }
 .button_open {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background-color: white;
   border: solid;
   border-width: 0.5px;
