@@ -253,7 +253,7 @@ export default class GridBuilder extends React.Component{
         grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
 
         console.log("mineList length: " + remainingMinesToFlag);
-        this.changeCellFlagState(grid,_cell);
+        this.changeCellFlagState(grid,_cell,!isFlaged);
         this.setState({
             remainingMinesToFlag:remainingMinesToFlag,
             flagsRemaining:flagsRemaining,
@@ -263,11 +263,11 @@ export default class GridBuilder extends React.Component{
         }
     };
 
-    changeCellFlagState = (_grid, cell) =>{
+    changeCellFlagState = (_grid, cell, newState) =>{
         _grid[cell.id_x][cell.id_y].isOpen = true;
         let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
         let cellRef = this.refs[index_ref];
-        cellRef.setFlaged(true);
+        cellRef.setFlaged(newState);
     };
 
     onCellExplode = (_cell) =>{
