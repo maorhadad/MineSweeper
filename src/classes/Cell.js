@@ -52,7 +52,6 @@ export default class Cell extends React.Component{
 
             );
         }
-
     };
 
     setOpen = (_isOpen)=>{

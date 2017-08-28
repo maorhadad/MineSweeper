@@ -6,7 +6,7 @@ export default class FormGridConfigs extends React.PureComponent {
         super(props);
         console.log("NameForm constructor");
         this.state =  {
-            isSuperMa: true,
+            isSuperMan: true,
             height: 10,
             width: 9,
             mines: 8,

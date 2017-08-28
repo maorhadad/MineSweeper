@@ -63,8 +63,6 @@ export default class GridBuilder extends React.Component{
                 _grid[row].push(cellDefaultData);
             }
         }
-        //console.log(_grid);
-        //console.log("GridBuilder.fillRows end");
         return  _grid;
     };
 
@@ -124,21 +122,6 @@ export default class GridBuilder extends React.Component{
         }
         return grid;
     };
-
-    // componentWillReceiveProps = (nextProps) => {
-    //     console.log("GridBuilder componentWillReceiveProps");
-    //     console.log("nextProps.numOfRows: " + nextProps.numOfRows);
-    //     var grid = this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
-    //     this.setState({
-    //             grid :  grid,
-    //             numOfRows: nextProps.numOfRows,
-    //             numOfCells: nextProps.numOfCells,
-    //             numOfMines : nextProps.numOfMines,
-    //             flagsRemaining : nextProps.numOfMines,
-    //             remainingMinesToFlag : nextProps.remainingMinesToFlag,
-    //         }
-    //     );
-    // };
 
     onCellOpen = (_cell) =>{
         let grid =  this.state.grid;
@@ -270,106 +253,6 @@ export default class GridBuilder extends React.Component{
         grid[_cell.id_x][_cell.id_y].isOpen = true;
         this.openCell(grid,_cell);
         this.props.onGameLose();
-    };
-
-    /*
-       * It cause to RangeError: Maximum call stack size exceeded.
-       * Now it #ForestFire.
-       * */
-    floodFill = (grid, cell) =>{
-
-        if(cell.isOpen || cell.isFlaged){
-            return;
-        }
-        var index_ref = this.buildReferenceId(cell.id_x , cell.id_y);
-        let cellRef = this.refs[index_ref];
-        if(cell.adjacent > 0 ){
-
-            grid[cell.id_x][cell.id_y].isOpen = true;
-            cellRef.setOpen(true);
-
-            return;
-        }
-
-        let numOfRows = this.state.numOfRows;
-        let numOfCells = this.state.numOfCells;
-
-        grid[cell.id_x][cell.id_y].isOpen = true;
-        cellRef.setOpen(true);
-
-        //Go north
-        let id_x =  cell.id_x - 1;
-        let id_y =  cell.id_y;
-        if(id_x >= 0){
-            var nextCell = grid[id_x][id_y];
-            console.log(id_x+"");
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid, nextCell);
-
-        }
-
-        //Go south
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y;
-        if(id_x < numOfRows){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go west
-        id_x =  cell.id_x;
-        id_y =  cell.id_y - 1;
-        if(id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go east
-        id_x =  cell.id_x;
-        id_y =  cell.id_y + 1;
-        if(id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go north west
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y - 1;
-        if(id_x >= 0 && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go south west
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y - 1;
-        if(id_x < numOfRows && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go north east
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y + 1;
-        if(id_x >= 0 && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go south east
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y + 1;
-        if(id_x < numOfRows && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
     };
 
     render(){

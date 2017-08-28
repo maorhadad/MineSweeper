@@ -10,33 +10,16 @@ export default class Game extends React.Component{
             numOfRows: 10,
             numOfCells: 9,
             numOfMines: 8,
-            uniqueId : 0 //Reset the game by changing this key. Cause the DOM to throw the old game instance and create new one.
+            uniqueId : 0 //Reset the game by changing this key. Cause the DOM to throw the old grid instance and create new one.
         };
     }
 
-    componentDidUpdate(){
-        //console.log("Game componentDidUpdated");
-        //this.resetGame();
-        // this.setState({
-        //     numOfRows: bundle.height,
-        //     numOfCells: bundle.width,
-        //     numOfMines: bundle.mines,
-        // });
-    }
-
-
     initGame = (_numOfRows, _numOfCells, _numOfMines) =>{
-        //console.log("initGame");
-        //console.log("_numOfRows: " + _numOfRows);
-        //console.log("_numOfCells: " + _numOfCells);
         console.log("initGame");
-        var a = _numOfRows;
-        var b = _numOfCells;
-        var c = _numOfMines;
         this.setState ({
-            numOfRows: a,
-            numOfCells: b,
-            numOfMines: c,
+            numOfRows: _numOfRows,
+            numOfCells: _numOfCells,
+            numOfMines: _numOfMines,
 
         },this.resetGame());
     };
@@ -48,7 +31,6 @@ export default class Game extends React.Component{
 
     resetGame = () =>{
         console.log("resetGame");
-        //this.refs.grid.resetGrid();
         let uniqueId = this.state.uniqueId;
         uniqueId === 0? uniqueId = 1 : uniqueId = 0;
         this.setState({
