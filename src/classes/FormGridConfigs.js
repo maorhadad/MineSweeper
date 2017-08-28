@@ -1,29 +1,16 @@
 import React from 'react';
 
-export default class FormGridConfigs extends React.Component {
+export default class FormGridConfigs extends React.PureComponent {
 
     constructor(props) {
         super(props);
         console.log("NameForm constructor");
         this.state =  {
+            isSuperMa: true,
             height: 10,
             width: 9,
             mines: 8,
         };
-    }
-
-
-    componentWillUpdate(){
-        //console.log("FormGridConfigs componentWillUpdate");
-    }
-
-    componentDidUpdate (){
-        //console.log("FormGridConfigs componentDidUpdate ");
-    }
-
-
-    componentDidMount(){
-        //console.log("FormGridConfigs componentDidMount");
     }
 
     handleWidth = (event) => {
@@ -48,23 +35,31 @@ export default class FormGridConfigs extends React.Component {
         });
     };
 
-    handleSubmit = () => {
-        this.props.initGame(this.state.height, this.state.width , this.state.mines);
+    handleSuperMan = (event) => {
+        let _superMan = event.target.checked;
+        console.log(_superMan);
+        this.setState({
+            isSuperMan: _superMan
+        });
+        this.props.notifySuperManStateChange(_superMan);
     };
 
-    getFormInputs = () =>{
-        //console.log("NameForm getFormInputs");
-        return {
-            height : this.state.height,
-            width : this.state.width,
-            mines : this.state.mines,
-        };
+    handleSubmit = () => {
+        this.props.initGame(this.state.height, this.state.width , this.state.mines);
     };
 
     render() {
         return (
             <div>
             <form>
+                <label>
+                    Superman:
+                    <input
+                        name="isSuperMan"
+                        type="checkbox"
+                        checked={this.state.isSuperMan || false}
+                        onChange={this.handleSuperMan} />
+                </label>
                 <label>
                     Width:
                     <input type="number" value={this.state.width} onChange={this.handleWidth} />

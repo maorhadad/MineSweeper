@@ -41,6 +41,11 @@ export default class Game extends React.Component{
         },this.resetGame());
     };
 
+    notifySuperManStateChange = (isSuperMan) =>{
+        console.log("notifySuperManStateChange");
+        this.refs.grid.setGridSuperMan(isSuperMan);
+    };
+
     resetGame = () =>{
         console.log("resetGame");
         //this.refs.grid.resetGrid();
@@ -78,6 +83,7 @@ export default class Game extends React.Component{
                 <FormGridConfigs
                     ref="inputs"
                     initGame={this.initGame}
+                    notifySuperManStateChange={this.notifySuperManStateChange}
                    />
                <br />
                 <GridBuilder
