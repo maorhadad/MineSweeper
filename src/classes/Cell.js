@@ -62,16 +62,6 @@ export default class Cell extends React.Component{
         });
     };
 
-    // setSuperMan = (_isSuperMan)=>{
-    //     if(_isSuperMan === this.props.isSuperMan){
-    //         return
-    //     }
-    //     console.log("_isSuperMan: " + _isSuperMan);
-    //     this.setState({
-    //         superman:_isSuperMan
-    //     });
-    // };
-
     setFlaged = (_isFlaged)=>{
         if(_isFlaged === this.state.isFlaged){
             return

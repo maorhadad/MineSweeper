@@ -66,22 +66,25 @@ export default class Game extends React.Component{
     render(){
         return (
             <div >
-                <FormGridConfigs
-                    ref="inputs"
-                    initGame={this.initGame}
-                    notifySuperManStateChange={this.notifySuperManStateChange}
-                   />
-               <br />
-                <GridBuilder
-                    key={this.state.uniqueId}
-                    ref="grid"
-                    superman = {this.state.superman}
-                    numOfRows = {this.state.numOfRows}
-                    numOfCells = {this.state.numOfCells}
-                    numOfMines= {this.state.numOfMines}
-                    onGameLose={this.onGameLose}
-                    onGameWin={this.onGameWin}
-                />
+                <div className="center-div">
+                    <FormGridConfigs
+                        ref="inputs"
+                        initGame={this.initGame}
+                        notifySuperManStateChange={this.notifySuperManStateChange}
+                       />
+                    </div>
+                <div className="center-div">
+                    <GridBuilder
+                        key={this.state.uniqueId}
+                        ref="grid"
+                        superman = {this.state.superman}
+                        numOfRows = {this.state.numOfRows}
+                        numOfCells = {this.state.numOfCells}
+                        numOfMines= {this.state.numOfMines}
+                        onGameLose={this.onGameLose}
+                        onGameWin={this.onGameWin}
+                    />
+                </div>
             </div>
 
         );

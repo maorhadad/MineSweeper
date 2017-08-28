@@ -292,18 +292,4 @@ export default class GridBuilder extends React.Component{
     buildReferenceId = (index_x , index_y) =>{
         return "cell_"+ index_x+ "," + index_y;
     };
-
-    // setGridSuperMan = (isSuperMan) =>{
-    //     console.log("setGridSuperMan: " + isSuperMan);
-    //     let mines = this.state.gridMineList;
-    //     let length = mines.length;
-    //     for(let i = 0 ; i < length ; i++){
-    //         let cell = mines[i];
-    //         console.log(cell);
-    //         let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
-    //         let cellRef = this.refs[index_ref];
-    //         cellRef.setSuperMan(isSuperMan);
-    //     }
-    //     console.log(mines);
-    // };
 }

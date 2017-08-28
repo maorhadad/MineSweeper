@@ -73,9 +73,10 @@ export default class FormGridConfigs extends React.PureComponent {
                     <input type="number" value={this.state.mines} onChange={this.handleMines} />
                 </label>
                 <br/>
-
             </form>
-                <button onClick= {this.handleSubmit}> New game</button>
+            <div>
+                <button className="center-div" onClick= {this.handleSubmit}> New game</button>
+            </div>
             </div>
         );
     }
