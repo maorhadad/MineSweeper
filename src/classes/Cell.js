@@ -3,26 +3,18 @@ import React from 'react';
 export default class Cell extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {
-            superman : false,
-            hasMine: props.cell.hasMine,
-            isFlaged: props.cell.isFlaged,
-            isOpen : props.cell.isOpen,
-            id_y : props.cell.id_y,
-            id_x : props.cell.id_x,
-            adjacent : props.cell.adjacent,
-        };
+        console.log(props)
     }
 
     handleClick = (event) => {
         //console.log("handleClick");
-        if(event.shiftKey && !this.state.isOpen){
+        if(event.shiftKey && !this.props.cell.isOpen){
 
             this.props.onCellFlagChange(this.props.cell);
 
-        }else if(!this.state.isFlaged && !this.state.isOpen){
+        }else if(!this.props.cell.isFlaged && !this.props.cell.isOpen){
 
-            if(this.state.hasMine){
+            if(this.props.cell.hasMine){
 
                 this.props.onCellExplode(this.props.cell);
 
@@ -34,11 +26,11 @@ export default class Cell extends React.Component{
     };
 
     renderSuperman = () => {
-        if(this.state.hasMine){
+        if(this.props.cell.hasMine){
             return (
                 <td className="button" onClick= {this.handleClick}>
                     <h10>*</h10>
-                    <h10>{this.state.adjacent + ""}</h10><br/>
+                    <h10>{this.props.cell.adjacent + ""}</h10><br/>
 
 
                 </td>
@@ -47,7 +39,7 @@ export default class Cell extends React.Component{
         }else{
             return (
                 <td className="button" onClick= {this.handleClick}>
-                    <h10>{this.state.adjacent + ""}</h10>
+                    <h10>{this.props.cell.adjacent + ""}</h10>
                 </td>
 
             );
@@ -55,44 +47,18 @@ export default class Cell extends React.Component{
 
     };
 
-    setOpen = (_isOpen)=>{
-        if(_isOpen === this.state.isOpen){
-            return
-        }
-        this.setState({
-            isOpen:_isOpen
-        });
-    };
-
-    setSuperMan = (_isSuperMan)=>{
-        if(_isSuperMan === this.state.isSuperMan){
-            return
-        }
-        console.log("_isSuperMan: " + _isSuperMan);
-        this.setState({
-            superman:_isSuperMan
-        });
-    };
-
-    setFlaged = (_isFlaged)=>{
-        if(_isFlaged === this.state.isFlaged){
-            return
-        }
-        this.setState({
-            isFlaged:_isFlaged
-        });
-    };
 
     renderNormal = () => {
         //console.log("Cell.renderNormal");
-        let isFlaged = this.state.isFlaged;
-        let isOpen = this.state.isOpen;
-        let hasMine = this.state.hasMine;
-        let superman = this.state.superman;
-        let cords = " x: " + this.state.id_x + " y: " + this.state.id_y;
-        if( (1 === this.state.id_x && 28 === this.state.id_y ) || (0 === this.state.id_x && 0 === this.state.id_y) ){
-            console.log("Rendering it with state: " + this.state.id_x + " " + this.state.id_y + " " + isOpen);
-        }
+        console.log("renderNormal");
+        console.log(this.props);
+        console.log(this.props.cell);
+        let isFlaged = this.props.cell.isFlaged;
+        let isOpen = this.props.cell.isOpen;
+        let hasMine = this.props.cell.hasMine;
+        let superman = this.props.superman;
+        let cords = " x: " + this.props.cell.id_x + " y: " + this.props.cell.id_y;
+
         if(hasMine && isOpen){
             return (
                 <td className="button_open"
@@ -104,7 +70,7 @@ export default class Cell extends React.Component{
         else if(isOpen){
             return (
                <td className="button_open" onClick= {this.handleClick}>
-                        {this.state.adjacent + "" + cords}
+                        {this.props.cell.adjacent + "" + cords}
                </td>
             );
         }else if(isFlaged){
@@ -137,8 +103,8 @@ export default class Cell extends React.Component{
 
 
     render() {
-        //console.log("gameOver: " + this.state.gameOver);
-        if(this.state.gameOver){
+        //console.log("gameOver: " + this.props.cell.gameOver);
+        if(this.props.cell.gameOver){
             //console.log("renderMineExplode");
             return this.renderMineExplode();
 

@@ -7,6 +7,7 @@ export default class Game extends React.Component{
         super(props);
         //console.log("Game constructor");
         this.state = {
+            superman:false,
             numOfRows: 10,
             numOfCells: 9,
             numOfMines: 8,
@@ -14,21 +15,7 @@ export default class Game extends React.Component{
         };
     }
 
-    componentDidUpdate(){
-        //console.log("Game componentDidUpdated");
-        //this.resetGame();
-        // this.setState({
-        //     numOfRows: bundle.height,
-        //     numOfCells: bundle.width,
-        //     numOfMines: bundle.mines,
-        // });
-    }
-
-
     initGame = (_numOfRows, _numOfCells, _numOfMines) =>{
-        //console.log("initGame");
-        //console.log("_numOfRows: " + _numOfRows);
-        //console.log("_numOfCells: " + _numOfCells);
         console.log("initGame");
         var a = _numOfRows;
         var b = _numOfCells;
@@ -43,7 +30,9 @@ export default class Game extends React.Component{
 
     notifySuperManStateChange = (isSuperMan) =>{
         console.log("notifySuperManStateChange");
-        this.refs.grid.setGridSuperMan(isSuperMan);
+        this.setState({
+            superman:isSuperMan
+        })
     };
 
     resetGame = () =>{
@@ -89,6 +78,7 @@ export default class Game extends React.Component{
                 <GridBuilder
                     key={this.state.uniqueId}
                     ref="grid"
+                    superman={this.state.superman || false}
                      numOfRows = {this.state.numOfRows}
                      numOfCells = {this.state.numOfCells}
                      numOfMines= {this.state.numOfMines}

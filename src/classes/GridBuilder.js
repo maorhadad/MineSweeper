@@ -25,7 +25,6 @@ export default class GridBuilder extends React.Component{
         this.state = {
             grid :  grid,
             gridMineList :  mineList,
-            superman: false,
             numOfRows: numOfRows,
             numOfCells: numOfCells,
             numOfMines : numOfMines,
@@ -125,23 +124,10 @@ export default class GridBuilder extends React.Component{
         return grid;
     };
 
-    // componentWillReceiveProps = (nextProps) => {
-    //     console.log("GridBuilder componentWillReceiveProps");
-    //     console.log("nextProps.numOfRows: " + nextProps.numOfRows);
-    //     var grid = this.generateGrid(nextProps.numOfRows, nextProps.numOfCells, nextProps.numOfMines);
-    //     this.setState({
-    //             grid :  grid,
-    //             numOfRows: nextProps.numOfRows,
-    //             numOfCells: nextProps.numOfCells,
-    //             numOfMines : nextProps.numOfMines,
-    //             flagsRemaining : nextProps.numOfMines,
-    //             remainingMinesToFlag : nextProps.remainingMinesToFlag,
-    //         }
-    //     );
-    // };
 
     onCellOpen = (_cell) =>{
-        let grid =  this.state.grid;
+       // current.squares.slice();
+        let grid =  this.state.grid.slice();
         this.forestFire(grid, _cell);
     };
 
@@ -191,14 +177,7 @@ export default class GridBuilder extends React.Component{
                         continue;
                     }
 
-                    if(1 === tCell.id_x && 28 === tCell.id_y){
-                        console.log("above !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
-                    }
-
                     if(!tCell.isOpen){
-                        if(1 === tCell.id_x && 28 === tCell.id_y){
-                            console.log("in tcell !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
-                        }
                         this.openCell(_grid,tCell);
                         if(cellsQ.length < 100){
                             cellsQ.push(tCell);
@@ -207,19 +186,19 @@ export default class GridBuilder extends React.Component{
                 }
             }
         }
+        this.setState({
+            grid :  _grid
+        });
+
     };
 
     openCell = (_grid, cell) =>{
         _grid[cell.id_x][cell.id_y].isOpen = true;
-        let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
-        let cellRef = this.refs[index_ref];
-        cellRef.setOpen(true);
     };
 
     onCellFlagChange = (_cell) =>{
 
-        let grid =  this.state.grid;
-        //var mineList =  this.state.gridMineList;
+        let grid =  this.state.grid.slice();
         let remainingMinesToFlag =  this.state.remainingMinesToFlag;
 
         //var emptyMineList =  [];
@@ -244,11 +223,14 @@ export default class GridBuilder extends React.Component{
                 remainingMinesToFlag = remainingMinesToFlag + 1;
             }
         }
+        console.log(grid);
+        console.log(_cell);
+
         grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
 
-        console.log("mineList length: " + remainingMinesToFlag);
-        this.changeCellFlagState(grid,_cell,!isFlaged);
+        //this.changeCellFlagState(grid,_cell,!isFlaged);
         this.setState({
+            grid:grid,
             remainingMinesToFlag:remainingMinesToFlag,
             flagsRemaining:flagsRemaining,
         });
@@ -257,12 +239,6 @@ export default class GridBuilder extends React.Component{
         }
     };
 
-    changeCellFlagState = (_grid, cell, newState) =>{
-        _grid[cell.id_x][cell.id_y].isOpen = true;
-        let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
-        let cellRef = this.refs[index_ref];
-        cellRef.setFlaged(newState);
-    };
 
     onCellExplode = (_cell) =>{
 
@@ -270,106 +246,6 @@ export default class GridBuilder extends React.Component{
         grid[_cell.id_x][_cell.id_y].isOpen = true;
         this.openCell(grid,_cell);
         this.props.onGameLose();
-    };
-
-    /*
-       * It cause to RangeError: Maximum call stack size exceeded.
-       * Now it #ForestFire.
-       * */
-    floodFill = (grid, cell) =>{
-
-        if(cell.isOpen || cell.isFlaged){
-            return;
-        }
-        var index_ref = this.buildReferenceId(cell.id_x , cell.id_y);
-        let cellRef = this.refs[index_ref];
-        if(cell.adjacent > 0 ){
-
-            grid[cell.id_x][cell.id_y].isOpen = true;
-            cellRef.setOpen(true);
-
-            return;
-        }
-
-        let numOfRows = this.state.numOfRows;
-        let numOfCells = this.state.numOfCells;
-
-        grid[cell.id_x][cell.id_y].isOpen = true;
-        cellRef.setOpen(true);
-
-        //Go north
-        let id_x =  cell.id_x - 1;
-        let id_y =  cell.id_y;
-        if(id_x >= 0){
-            var nextCell = grid[id_x][id_y];
-            console.log(id_x+"");
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid, nextCell);
-
-        }
-
-        //Go south
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y;
-        if(id_x < numOfRows){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go west
-        id_x =  cell.id_x;
-        id_y =  cell.id_y - 1;
-        if(id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go east
-        id_x =  cell.id_x;
-        id_y =  cell.id_y + 1;
-        if(id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go north west
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y - 1;
-        if(id_x >= 0 && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go south west
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y - 1;
-        if(id_x < numOfRows && id_y >= 0){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go north east
-        id_x =  cell.id_x - 1;
-        id_y =  cell.id_y + 1;
-        if(id_x >= 0 && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
-
-        //Go south east
-        id_x =  cell.id_x + 1;
-        id_y =  cell.id_y + 1;
-        if(id_x < numOfRows && id_y < numOfCells){
-            nextCell = grid[id_x][id_y];
-            //if( !(nextCell.isOpen && nextCell.isFlaged))
-            this.floodFill(grid,nextCell);
-        }
     };
 
     render(){
@@ -383,6 +259,7 @@ export default class GridBuilder extends React.Component{
                         ref={index_ref}
                         key={index_y}
                         cell={cell}
+                        superman={this.props.superman || false}
                         onCellOpen={this.onCellOpen}
                         onCellFlagChange={this.onCellFlagChange}
                         onCellExplode={this.onCellExplode}
@@ -390,7 +267,7 @@ export default class GridBuilder extends React.Component{
                 );
             });
             return(
-                <tr className="trc"   key={index_x}>{v}</tr>
+                <tr className="CellsGridRow"   key={index_x}>{v}</tr>
             );
         });
         return (
@@ -412,15 +289,15 @@ export default class GridBuilder extends React.Component{
 
     setGridSuperMan = (isSuperMan) =>{
         console.log("setGridSuperMan: " + isSuperMan);
-        let mines = this.state.gridMineList;
-        let length = mines.length;
-        for(let i = 0 ; i < length ; i++){
-            let cell = mines[i];
-            console.log(cell);
-            let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
-            let cellRef = this.refs[index_ref];
-            cellRef.setSuperMan(isSuperMan);
-        }
-        console.log(mines);
+        // let mines = this.state.gridMineList;
+        // let length = mines.length;
+        // for(let i = 0 ; i < length ; i++){
+        //     let cell = mines[i];
+        //     console.log(cell);
+        //     let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
+        //     let cellRef = this.refs[index_ref];
+        //     cellRef.setSuperMan(isSuperMan);
+        // }
+        // console.log(mines);
     };
 }
