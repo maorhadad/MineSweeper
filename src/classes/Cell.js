@@ -4,7 +4,7 @@ export default class Cell extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            superman : true,
+            superman : false,
             hasMine: props.cell.hasMine,
             isFlaged: props.cell.isFlaged,
             isOpen : props.cell.isOpen,
@@ -56,22 +56,22 @@ export default class Cell extends React.Component{
     };
 
     setOpen = (_isOpen)=>{
-        //console.log("setOpen:  " + _isOpen +" " + this.state.id_x);
-        if( (1 === this.state.id_x && 28 === this.state.id_y ) ){
-            console.log("start setOpen : "  + this.state.id_x + " " + this.state.id_y + " " + _isOpen);
-        }
-        if( (0 === this.state.id_x && 0 === this.state.id_y ) ){
-            console.log("start setOpen : "  + this.state.id_x + " " + this.state.id_y + " " + _isOpen);
-        }
         if(_isOpen === this.state.isOpen){
             return
         }
         this.setState({
             isOpen:_isOpen
         });
-        if( (1 === this.state.id_x && 28 === this.state.id_y ) ){
-            console.log(" end setOpen : "  + this.state.id_x + " " + this.state.id_y + " " + _isOpen);
+    };
+
+    setSuperMan = (_isSuperMan)=>{
+        if(_isSuperMan === this.state.isSuperMan){
+            return
         }
+        console.log("_isSuperMan: " + _isSuperMan);
+        this.setState({
+            superman:_isSuperMan
+        });
     };
 
     setFlaged = (_isFlaged)=>{
