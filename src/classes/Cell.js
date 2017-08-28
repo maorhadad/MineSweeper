@@ -25,29 +25,6 @@ export default class Cell extends React.Component{
         }
     };
 
-    renderSuperman = () => {
-        if(this.props.cell.hasMine){
-            return (
-                <td className="button" onClick= {this.handleClick}>
-                    <h10>*</h10>
-                    <h10>{this.props.cell.adjacent + ""}</h10><br/>
-
-
-                </td>
-
-            );
-        }else{
-            return (
-                <td className="button" onClick= {this.handleClick}>
-                    <h10>{this.props.cell.adjacent + ""}</h10>
-                </td>
-
-            );
-        }
-
-    };
-
-
     renderNormal = () => {
         //console.log("Cell.renderNormal");
         console.log("renderNormal");
