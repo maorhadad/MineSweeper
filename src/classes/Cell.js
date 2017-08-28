@@ -59,15 +59,14 @@ export default class Cell extends React.Component{
         var cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
         if(hasMine && isOpen){
             return (
-                <td className="Cell_explode"
-                    onClick= {this.handleClick}>
+                <td className="Cell_explode">
                          {"*" + cords}
                 </td>
             );
         }
         else if(isOpen){
             return (
-               <td className="button_open" onClick= {this.handleClick}>
+               <td className="button_open">
                         {this.state.adjacent + "" + cords}
                </td>
             );
