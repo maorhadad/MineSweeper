@@ -32,27 +32,6 @@ export default class Cell extends React.Component{
         }
     };
 
-    renderSuperman = () => {
-        if(this.state.hasMine){
-            return (
-                <td className="button" onClick= {this.handleClick}>
-                    <h10>*</h10>
-                    <h10>{this.state.adjacent + ""}</h10><br/>
-
-
-                </td>
-
-            );
-        }else{
-            return (
-                <td className="button" onClick= {this.handleClick}>
-                    <h10>{this.state.adjacent + ""}</h10>
-                </td>
-
-            );
-        }
-    };
-
     setOpen = (_isOpen)=>{
         if(_isOpen === this.state.isOpen){
             return
@@ -77,8 +56,10 @@ export default class Cell extends React.Component{
         let isOpen = this.state.isOpen;
         let hasMine = this.state.hasMine;
         let superman = this.props.superman;
-        console.log("superman: " + this.props.superman);
-        let cords = " x: " + this.state.id_x + " y: " + this.state.id_y;
+        let env = process.argv[2] || 'dev';
+        if(env === 'dev'){
+            var cords = " x: " + this.state.id_x + " y: " + this.state.id_y;
+        }
         if(hasMine && isOpen){
             return (
                 <td className="button_open"
@@ -127,7 +108,6 @@ export default class Cell extends React.Component{
         if(this.state.gameOver){
             //console.log("renderMineExplode");
             return this.renderMineExplode();
-
         }
         return this.renderNormal();
     }
