@@ -16,8 +16,6 @@ export default class GridBuilder extends React.Component{
     }
 
     initGrid = (numOfRows, numOfCells, numOfMines) =>{
-        console.log("GridBuilder.initGrid");
-
         var gtg = this.generateGrid(numOfRows, numOfCells, numOfMines);
         var grid = gtg.grid;
         var mineList = gtg.mines;
@@ -25,7 +23,6 @@ export default class GridBuilder extends React.Component{
         this.state = {
             grid :  grid,
             gridMineList :  mineList,
-            superman: false,
             numOfRows: numOfRows,
             numOfCells: numOfCells,
             numOfMines : numOfMines,
@@ -58,6 +55,7 @@ export default class GridBuilder extends React.Component{
                     isFlaged: false,
                     isOpen : false,
                     adjacent:0,
+                    superman: this.props.superman,
                     gameOverCallBack:this.props.onGameLose,
                 };
                 _grid[row].push(cellDefaultData);
@@ -257,6 +255,7 @@ export default class GridBuilder extends React.Component{
 
     render(){
         console.log("GridBuilder.render");
+        console.log("superman: " + this.props.superman);
         var gridUi = this.state.grid.map((row, index_x) => {
             var v = row.map((cell, index_y) => {
                 var index_ref = this.buildReferenceId(index_x , index_y);
@@ -266,6 +265,7 @@ export default class GridBuilder extends React.Component{
                         ref={index_ref}
                         key={index_y}
                         cell={cell}
+                        superman={this.props.superman}
                         onCellOpen={this.onCellOpen}
                         onCellFlagChange={this.onCellFlagChange}
                         onCellExplode={this.onCellExplode}
@@ -293,17 +293,17 @@ export default class GridBuilder extends React.Component{
         return "cell_"+ index_x+ "," + index_y;
     };
 
-    setGridSuperMan = (isSuperMan) =>{
-        console.log("setGridSuperMan: " + isSuperMan);
-        let mines = this.state.gridMineList;
-        let length = mines.length;
-        for(let i = 0 ; i < length ; i++){
-            let cell = mines[i];
-            console.log(cell);
-            let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
-            let cellRef = this.refs[index_ref];
-            cellRef.setSuperMan(isSuperMan);
-        }
-        console.log(mines);
-    };
+    // setGridSuperMan = (isSuperMan) =>{
+    //     console.log("setGridSuperMan: " + isSuperMan);
+    //     let mines = this.state.gridMineList;
+    //     let length = mines.length;
+    //     for(let i = 0 ; i < length ; i++){
+    //         let cell = mines[i];
+    //         console.log(cell);
+    //         let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
+    //         let cellRef = this.refs[index_ref];
+    //         cellRef.setSuperMan(isSuperMan);
+    //     }
+    //     console.log(mines);
+    // };
 }

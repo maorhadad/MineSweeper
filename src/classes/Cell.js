@@ -4,7 +4,6 @@ export default class Cell extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            superman : false,
             hasMine: props.cell.hasMine,
             isFlaged: props.cell.isFlaged,
             isOpen : props.cell.isOpen,
@@ -63,15 +62,15 @@ export default class Cell extends React.Component{
         });
     };
 
-    setSuperMan = (_isSuperMan)=>{
-        if(_isSuperMan === this.state.isSuperMan){
-            return
-        }
-        console.log("_isSuperMan: " + _isSuperMan);
-        this.setState({
-            superman:_isSuperMan
-        });
-    };
+    // setSuperMan = (_isSuperMan)=>{
+    //     if(_isSuperMan === this.props.isSuperMan){
+    //         return
+    //     }
+    //     console.log("_isSuperMan: " + _isSuperMan);
+    //     this.setState({
+    //         superman:_isSuperMan
+    //     });
+    // };
 
     setFlaged = (_isFlaged)=>{
         if(_isFlaged === this.state.isFlaged){
@@ -87,11 +86,9 @@ export default class Cell extends React.Component{
         let isFlaged = this.state.isFlaged;
         let isOpen = this.state.isOpen;
         let hasMine = this.state.hasMine;
-        let superman = this.state.superman;
+        let superman = this.props.superman;
+        console.log("superman: " + this.props.superman);
         let cords = " x: " + this.state.id_x + " y: " + this.state.id_y;
-        if( (1 === this.state.id_x && 28 === this.state.id_y ) || (0 === this.state.id_x && 0 === this.state.id_y) ){
-            console.log("Rendering it with state: " + this.state.id_x + " " + this.state.id_y + " " + isOpen);
-        }
         if(hasMine && isOpen){
             return (
                 <td className="button_open"

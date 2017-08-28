@@ -6,7 +6,7 @@ export default class FormGridConfigs extends React.PureComponent {
         super(props);
         console.log("NameForm constructor");
         this.state =  {
-            isSuperMan: true,
+            isSuperMan: false,
             height: 10,
             width: 9,
             mines: 8,
@@ -36,12 +36,12 @@ export default class FormGridConfigs extends React.PureComponent {
     };
 
     handleSuperMan = (event) => {
-        let _superMan = event.target.checked;
-        console.log(_superMan);
+        let _superman = event.target.checked;
+        console.log(_superman);
         this.setState({
-            isSuperMan: _superMan
+            isSuperMan: _superman
         });
-        this.props.notifySuperManStateChange(_superMan);
+        this.props.notifySuperManStateChange(_superman);
     };
 
     handleSubmit = () => {
