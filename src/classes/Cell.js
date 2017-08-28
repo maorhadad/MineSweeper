@@ -59,7 +59,7 @@ export default class Cell extends React.Component{
         var cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
         if(hasMine && isOpen){
             return (
-                <td className="button_open"
+                <td className="Cell_explode"
                     onClick= {this.handleClick}>
                          {"*" + cords}
                 </td>
@@ -73,8 +73,8 @@ export default class Cell extends React.Component{
             );
         }else if(isFlaged){
             return (
-                <td className="button" onClick= {this.handleClick}>
-                    {"Flag" + cords}
+                <td className="Cell_flag" onClick= {this.handleClick}>
+                    {cords}
                 </td>
             );
         }else if(superman && hasMine) {

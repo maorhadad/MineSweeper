@@ -52,20 +52,21 @@ ol, ul {
 }
 
 .button {
-  width: 14px;
-  height: 14px;
-  background-color: lightgray;
-  border: solid;
-  border-width: 0.5px;
-  color: black;
-  padding: 7px 7px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 7px;
-  margin: 0.5px 0.5px;
-  cursor: pointer;
+    width: 14px;
+    height: 14px;
+    background-color: lightgray;
+    border: solid;
+    border-width: 0.5px;
+    color: black;
+    padding: 7px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 7px;
+    margin: 0.5px 0.5px;
+    cursor: pointer;
 }
+
 .button_open {
   width: 14px;
   height: 14px;
@@ -80,6 +81,38 @@ ol, ul {
   font-size: 7px;
   margin: 0.5px 0.5px;
   cursor: pointer;
+}
+
+.Cell_explode {
+    width: 14px;
+    height: 14px;
+    border: solid;
+    border-width: 0.5px;
+    color: black;
+    padding: 7px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 7px;
+    margin: 0.5px 0.5px;
+    cursor: pointer;
+    background: white url("images/mine2.png") no-repeat center center;
+}
+
+.Cell_flag {
+    width: 14px;
+    height: 14px;
+    border: solid;
+    border-width: 0.5px;
+    color: black;
+    padding: 7px 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 7px;
+    margin: 0.5px 0.5px;
+    cursor: pointer;
+    background: white url("images/flag2.png") no-repeat center center;
 }
 
 .center-div{
