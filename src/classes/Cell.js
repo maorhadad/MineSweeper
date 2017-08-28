@@ -56,10 +56,7 @@ export default class Cell extends React.Component{
         let isOpen = this.state.isOpen;
         let hasMine = this.state.hasMine;
         let superman = this.props.superman;
-        let env = process.argv[2] || 'dev';
-        if(env === 'dev'){
-            var cords = " x: " + this.state.id_x + " y: " + this.state.id_y;
-        }
+        var cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
         if(hasMine && isOpen){
             return (
                 <td className="button_open"

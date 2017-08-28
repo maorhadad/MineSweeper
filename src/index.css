@@ -52,32 +52,32 @@ ol, ul {
 }
 
 .button {
-  width: 30px;
-  height: 30px;
+  width: 14px;
+  height: 14px;
   background-color: lightgray;
   border: solid;
   border-width: 0.5px;
   color: black;
-  padding: 16px 16px;
+  padding: 7px 7px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 7px;
   margin: 0.5px 0.5px;
   cursor: pointer;
 }
 .button_open {
-  width: 30px;
-  height: 30px;
+  width: 14px;
+  height: 14px;
   background-color: white;
   border: solid;
   border-width: 0.5px;
   color: black;
-  padding: 16px 16px;
+  padding: 7px 7px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 7px;
   margin: 0.5px 0.5px;
   cursor: pointer;
 }
