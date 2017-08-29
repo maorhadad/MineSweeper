@@ -133,6 +133,7 @@ export default class GridBuilder extends React.Component{
         let numOfCells = this.state.numOfCells;
         cellsQ.push(_cell);
         console.log("cellsQ length: " + cellsQ.length);
+        this.validateState(_grid[_cell.id_x][_cell.id_y],_cell);
         while (cellsQ.length){
             if(cellsQ.length === numOfCells*numOfRows){
                 return;
@@ -172,14 +173,7 @@ export default class GridBuilder extends React.Component{
                         continue;
                     }
 
-                    if(1 === tCell.id_x && 28 === tCell.id_y){
-                        console.log("above !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
-                    }
-
                     if(!tCell.isOpen){
-                        if(1 === tCell.id_x && 28 === tCell.id_y){
-                            console.log("in tcell !tCell.isOpen :"  + tCell.id_x + " " + tCell.id_y);
-                        }
                         this.openCell(_grid,tCell);
                         if(cellsQ.length < 100){
                             cellsQ.push(tCell);
@@ -188,6 +182,10 @@ export default class GridBuilder extends React.Component{
                 }
             }
         }
+    };
+
+    validateState = (gridDataCell, cell) =>{
+        gridDataCell.isOpen = cell.isOpen;
     };
 
     openCell = (_grid, cell) =>{
@@ -226,7 +224,6 @@ export default class GridBuilder extends React.Component{
                 remainingMinesToFlag = remainingMinesToFlag + 1;
             }
         }
-        grid[_cell.id_x][_cell.id_y].isFlaged = !isFlaged;
 
         console.log("mineList length: " + remainingMinesToFlag);
         this.changeCellFlagState(grid,_cell,!isFlaged);
@@ -239,9 +236,9 @@ export default class GridBuilder extends React.Component{
         }
     };
 
-    changeCellFlagState = (_grid, cell, newState) =>{
-        _grid[cell.id_x][cell.id_y].isOpen = true;
-        let index_ref = this.buildReferenceId(cell.id_x , cell.id_y);//getting reference to cell
+    changeCellFlagState = (_grid, _cell, newState) =>{
+        _grid[_cell.id_x][_cell.id_y].isFlaged = newState;
+        let index_ref = this.buildReferenceId(_cell.id_x , _cell.id_y);//getting reference to cell
         let cellRef = this.refs[index_ref];
         cellRef.setFlaged(newState);
     };
