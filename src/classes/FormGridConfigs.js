@@ -60,6 +60,7 @@ export default class FormGridConfigs extends React.PureComponent {
                         checked={this.state.isSuperMan || false}
                         onChange={this.handleSuperMan} />
                 </label>
+                <br/>
                 <label>
                     Width:
                     <input type="number" value={this.state.width} onChange={this.handleWidth} />

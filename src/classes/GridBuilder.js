@@ -205,15 +205,16 @@ export default class GridBuilder extends React.Component{
 
         //var emptyMineList =  [];
         let flagsRemaining =  this.state.flagsRemaining;
-        if(flagsRemaining === 0){//User finish all its flag.
-            return;
-        }
+
         let isFlaged = _cell.isFlaged;
         let hasMine = _cell.hasMine;
 
         console.log("remainingMinesToFlag length: " + remainingMinesToFlag);
         if(!isFlaged){
             console.log("flaged");
+            if(flagsRemaining === 0){//User finish all its flag.
+                return;
+            }
             flagsRemaining--;
             if(hasMine){
                 remainingMinesToFlag--;
