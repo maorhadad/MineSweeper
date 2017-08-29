@@ -133,7 +133,6 @@ export default class GridBuilder extends React.Component{
         let numOfCells = this.state.numOfCells;
         cellsQ.push(_cell);
         console.log("cellsQ length: " + cellsQ.length);
-        this.validateState(_grid[_cell.id_x][_cell.id_y],_cell);
         while (cellsQ.length){
             if(cellsQ.length === numOfCells*numOfRows){
                 return;
