@@ -14,7 +14,6 @@ export default class Cell extends React.Component{
     }
 
     handleClick = (event) => {
-        //console.log("handleClick");
         if(event.shiftKey && !this.state.isOpen){
 
             this.props.onCellFlagChange(this.props.cell);
@@ -51,12 +50,11 @@ export default class Cell extends React.Component{
     };
 
     renderNormal = () => {
-        //console.log("Cell.renderNormal");
         let isFlaged = this.state.isFlaged;
         let isOpen = this.state.isOpen;
         let hasMine = this.state.hasMine;
         let superman = this.props.superman;
-        var cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
+        let cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
         if(hasMine && isOpen){
             return (
                 <td className="Cell_explode">
@@ -92,7 +90,6 @@ export default class Cell extends React.Component{
     };
 
     renderMineExplode = () => {
-      //  console.log("Cell.renderMineExplode");
         return (
             <td className="button" >*</td>
         );
@@ -100,9 +97,7 @@ export default class Cell extends React.Component{
 
 
     render() {
-        //console.log("gameOver: " + this.state.gameOver);
         if(this.state.gameOver){
-            //console.log("renderMineExplode");
             return this.renderMineExplode();
         }
         return this.renderNormal();

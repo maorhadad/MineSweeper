@@ -5,7 +5,6 @@ import FormGridConfigs from './FormGridConfigs.js'
 export default class Game extends React.Component{
     constructor(props){
         super(props);
-        //console.log("Game constructor");
         this.state = {
             superman:false,
             numOfRows: 10,
@@ -16,7 +15,6 @@ export default class Game extends React.Component{
     }
 
     initGame = (_numOfRows, _numOfCells, _numOfMines) =>{
-        console.log("initGame");
         this.setState ({
             numOfRows: _numOfRows,
             numOfCells: _numOfCells,
@@ -26,7 +24,6 @@ export default class Game extends React.Component{
     };
 
     notifySuperManStateChange = (isSuperMan) =>{
-        console.log("notifySuperManStateChange");
         this.setState({
             superman:isSuperMan
         });
@@ -34,7 +31,6 @@ export default class Game extends React.Component{
     };
 
     resetGame = () =>{
-        console.log("resetGame");
         let uniqueId = this.state.uniqueId;
         uniqueId === 0? uniqueId = 1 : uniqueId = 0;
         this.setState({
@@ -86,7 +82,6 @@ export default class Game extends React.Component{
                     />
                 </div>
             </div>
-
         );
     }
 }
