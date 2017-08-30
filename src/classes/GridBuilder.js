@@ -178,10 +178,8 @@ export default class GridBuilder extends React.Component{
     onCellFlagChange = (_cell) =>{
 
         let grid =  this.state.grid;
-        //var mineList =  this.state.gridMineList;
         let remainingMinesToFlag =  this.state.remainingMinesToFlag;
 
-        //var emptyMineList =  [];
         let flagsRemaining =  this.state.flagsRemaining;
 
         let isFlaged = _cell.isFlaged;

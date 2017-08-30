@@ -54,7 +54,7 @@ export default class Cell extends React.Component{
         let isOpen = this.state.isOpen;
         let hasMine = this.state.hasMine;
         let superman = this.props.superman;
-        let cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;
+        let cords = "";// " x: " + this.state.id_x + " y: " + this.state.id_y;//for debug
         if(hasMine && isOpen){
             return (
                 <td className="Cell_explode">
