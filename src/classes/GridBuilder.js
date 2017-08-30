@@ -189,6 +189,7 @@ export default class GridBuilder extends React.Component{
 
         if(!isFlaged){
             if(flagsRemaining === 0){//User finish all its flag.
+                alert("No more flags left!!!");
                 return;
             }
             flagsRemaining--;
