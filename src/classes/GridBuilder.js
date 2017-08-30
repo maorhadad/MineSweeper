@@ -159,9 +159,6 @@ export default class GridBuilder extends React.Component{
                 for(let j = minY ; j <= maxY ; j ++){
                     //console.log("X: " + i + " Y :" + j);
 
-                    if(i === currentCell.id_x && j === currentCell.id_y){//Same cell.We don't need to reenter it.(Infinity loop)
-                        continue
-                    }
                     if( j < 0 || j >= numOfCells) {//Out of bounds
                         continue;
                     }
