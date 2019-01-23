@@ -10,3 +10,5 @@ Enter folder.
 Run CMD $ npm install
 
 Run CMD $ npm start
+
+https://maorhadad.github.io/MineSweeper/
